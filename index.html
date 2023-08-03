@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Shayari App</title>
+  <style>
+    #shayariForm{
+      margin:auto;
+      background-color: aqua;
+      font-weight: 100;
+      font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+      height:50%;
+      width:100%
+    }
+    #shayariResult{
+      margin:auto;
+      background-color: red;
+      font-weight: 100;
+      font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+      height:50%;
+      width:100%
+
+    }
+  </style>
+</head>
+<body>
+  <h1>Shayari App</h1>
+  <form id="shayariForm">
+    <label for="keyword">Enter a keyword:</label>
+    <input type="text" id="keyword" name="keyword" required>
+    <button type="submit">Get Shayari</button>
+  </form>
+  <div id="shayariResult"></div>
+
+  <script>
+    document.getElementById('shayariForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const keyword = document.getElementById('keyword').value;
+      const shayariResult = document.getElementById('shayariResult');
+
+      try {
+        const response = await fetch(`http://localhost:3000/shayari?keyword=${encodeURIComponent(keyword)}`);
+        const data = await response.json();
+
+        if (response.ok) {
+          shayariResult.innerHTML = `<p>${data.shayari}</p>`;
+        } else {
+          shayariResult.innerHTML = `<p>Error: ${data.error}</p>`;
+        }
+      } catch (error) {
+        shayariResult.innerHTML = `<p>Error: Something went wrong</p>`;
+      }
+    });
+  </script>
+</body>
+</html>
